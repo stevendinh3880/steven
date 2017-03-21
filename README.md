@@ -27,3 +27,23 @@
 
 ## Install python requirements
 `pip install -r requirements_py.txt`
+
+## Redis reference 
+https://redis.io
+
+## Installing `redis`
+`apt install redis-server`
+
+## Installing `redis` client and tools
+`apt install redis-tools`
+
+## Edit redis config to setup the memory
+`vi /etc/redis/redis.conf`
+Currently this VM is `512Mb` RAM so setting `redis` to use only `32Mb`
+Check for the line 
+`# maxmemory <bytes>`
+replace with the following
+`maxmemory 33554432`
+
+## Restart `redis` service
+`service redis-server restart` 
