@@ -39,9 +39,12 @@ https://redis.io
 
 ## Edit redis config to setup the memory
 `vi /etc/redis/redis.conf`
+
 Currently this VM is `512Mb` RAM so setting `redis` to use only `32Mb`
+
 Check for the line 
 `# maxmemory <bytes>`
+
 replace with the following
 `maxmemory 33554432`
 
