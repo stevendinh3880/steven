@@ -1,5 +1,6 @@
 import arrow
 import csv
+import json
 import os
 import redis
 from collections import namedtuple
@@ -45,12 +46,27 @@ def upload_file():
                     csv_obj = csv_class(*each_csv)
                     # print(csv_obj)
                     time_str = '%s %s' % (csv_obj.Date, csv_obj.Time)
+                    date_str = '%s' % (csv_obj.Date)
                     time_obj = arrow.get(time_str, 'M/D/YYYY H:m')
-                    # print(time_obj)
+                    date_obj = arrow.get(date_str, 'M/D/YYYY')
                     if 'add' in csv_obj.Status.lower():
-                        redis_con.hset(str(time_obj), csv_obj.ID, csv_obj.Phone)
+                        data_str = redis_con.hget('1900-'+str(date_obj), csv_obj.ID)
+                        if not data_str:
+                            data = json.dumps({
+                                'phone': csv_obj.Phone,
+                                'time': [time_str]
+                            })
+                        else:
+                            data_json = json.loads(data_str.decode('utf-8'))
+                            data_json['phone'] = csv_obj.Phone
+                            data_json['time'].append(time_str)
+                            data_json['time'] = list(set(data_json['time']))
+                            data = json.dumps(data_json)
+                        redis_con.hset(str(time_obj), csv_obj.ID, data)
+                        redis_con.hset('1900-'+str(date_obj), csv_obj.ID, data)
                     if 'del' in csv_obj.Status.lower():
                         redis_con.hdel(str(time_obj), csv_obj.ID)
+                        redis_con.hdel('1900-'+str(date_obj), csv_obj.ID)
             os.remove(file_path)
             return '''File uploaded successfully'''
     return '''
