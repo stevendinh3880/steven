@@ -1,2 +1,3 @@
-0 19 * * * root /root/steven/.venv/bin/python /root/steve/notification.py -d
-*/15 * * * * root /root/steven/.venv/bin/python /root/steve/notification.py
+0 19 * * * root /root/steven/.venv/bin/python /root/steve/notification.py -n
+0 7 * * * root /root/steven/.venv/bin/python /root/steve/notification.py -m
+# */15 * * * * root /root/steven/.venv/bin/python /root/steve/notification.py
