@@ -35,7 +35,7 @@ def send_notification(pattern, del_flag=False):
                 message = client.messages.create(
                     to='+1%s' % (phone, ),
                     from_='+12403033098',
-                    body='Hello! Your appointment is at %s' % ('\n'.join(time_list)))
+                    body='Hello! You have an appointment with Dr. Scafide at %s' % ('\n'.join(time_list)))
                 if notification_sent_set:
                     notification_sent = redis_con.hset(date, each_user, 1)
 
